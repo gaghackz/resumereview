@@ -4,13 +4,14 @@ const fs = require("fs");
 const cors = require("cors");
 const multer = require("multer");
 const dotenv = require("dotenv");
-
+const { upsertToPineCone } = require("./utils/dbUpsert.js");
 const {
   extractTextFromPdf,
   chunkText,
   embedText,
 } = require("./utils/chunkAndEmbed.js");
 
+const embeddedChunks = [];
 const app = express();
 app.use(cors());
 const upload = multer({ dest: "uploads/" });
@@ -26,7 +27,6 @@ app.post("/file", upload.single("file"), async (req, res) => {
     const text = await extractTextFromPdf(filePath);
     const chunks = chunkText(text);
 
-    const embeddedChunks = [];
     for (let i = 0; i < chunks.length; i++) {
       const embedding = await embedText(chunks[i]);
       embeddedChunks.push({
@@ -34,6 +34,15 @@ app.post("/file", upload.single("file"), async (req, res) => {
         embedding,
       });
     }
+    const formatted = embeddedChunks.map((item, index) => ({
+      id: String.fromCharCode(65 + index), // A, B, C, ...
+      values: item.embedding[0].values,
+      metadata: {
+        originalChunk: item.chunk.slice(0, 100), // keep short preview
+        length: item.chunk.length,
+      },
+    }));
+    upsertToPineCone(formatted);
 
     // Optionally delete file after processing
     fs.unlinkSync(filePath);
