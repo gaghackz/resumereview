@@ -31,7 +31,7 @@ export async function chunkEmbedUpload(req, res) {
       id: String.fromCharCode(65 + index), // A, B, C, ...
       values: item.embedding[0].values,
       metadata: {
-        originalChunk: item.chunk.slice(0, 100), // keep short preview
+        chunk: item.chunk,
         length: item.chunk.length,
       },
     }));
