@@ -36,7 +36,7 @@ async function embedText(chunk) {
   });
 
   const response = await ai.models.embedContent({
-    model: "gemini-embedding-exp-03-07",
+    model: "text-embedding-004",
     contents: chunk,
     config: {
       taskType: "SEMANTIC_SIMILARITY",

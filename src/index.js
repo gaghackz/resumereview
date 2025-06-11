@@ -47,7 +47,7 @@ app.post("/file", upload.single("file"), async (req, res) => {
     // Optionally delete file after processing
     fs.unlinkSync(filePath);
 
-    res.json({ embeddedChunks });
+    res.json({ formatted });
   } catch (err) {
     console.error("Error:", err.message);
     res.status(500).json({ error: "Failed to process file" });
