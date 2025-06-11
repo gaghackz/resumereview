@@ -1,5 +1,11 @@
-import React, { useState, useRef } from 'react';
-import { Upload, FileText, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import React, { useState, useRef } from "react";
+import {
+  Upload,
+  FileText,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 
 interface UploadPageProps {
   onUploadSuccess: (fileName: string) => void;
@@ -8,7 +14,7 @@ interface UploadPageProps {
 const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [error, setError] = useState<string>('');
+  const [error, setError] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +35,7 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const files = e.dataTransfer.files;
     if (files.length > 0) {
       handleFileSelection(files[0]);
@@ -37,19 +43,20 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
   };
 
   const handleFileSelection = (file: File) => {
-    if (file.type !== 'application/pdf') {
-      setError('Please select a PDF file only.');
+    if (file.type !== "application/pdf") {
+      setError("Please select a PDF file only.");
       setSelectedFile(null);
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) { // 10MB limit
-      setError('File size must be less than 10MB.');
+    if (file.size > 10 * 1024 * 1024) {
+      // 10MB limit
+      setError("File size must be less than 10MB.");
       setSelectedFile(null);
       return;
     }
 
-    setError('');
+    setError("");
     setSelectedFile(file);
   };
 
@@ -64,16 +71,19 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
     if (!selectedFile) return;
 
     setIsUploading(true);
-    setError('');
+    setError("");
 
     try {
       const formData = new FormData();
-      formData.append('file', selectedFile);
+      formData.append("file", selectedFile);
 
-      const response = await fetch('http://localhost:3000/v1/file', {
-        method: 'POST',
-        body: formData,
-      });
+      const response = await fetch(
+        "https://resumereview-x9ve.onrender.com/v1/file",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Upload failed: ${response.statusText}`);
@@ -82,7 +92,9 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
       // Success
       onUploadSuccess(selectedFile.name);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Upload failed. Please try again.');
+      setError(
+        err instanceof Error ? err.message : "Upload failed. Please try again."
+      );
     } finally {
       setIsUploading(false);
     }
@@ -104,7 +116,8 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
             Resume Review Assistant
           </h1>
           <p className="text-xl text-gray-600 max-w-md mx-auto">
-            Upload your resume in PDF format to get started with AI-powered analysis
+            Upload your resume in PDF format to get started with AI-powered
+            analysis
           </p>
         </div>
 
@@ -113,11 +126,12 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
           <div
             className={`
               border-2 border-dashed rounded-xl p-12 text-center transition-all duration-200 cursor-pointer
-              ${isDragging 
-                ? 'border-blue-400 bg-blue-50' 
-                : selectedFile 
-                ? 'border-green-400 bg-green-50' 
-                : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+              ${
+                isDragging
+                  ? "border-blue-400 bg-blue-50"
+                  : selectedFile
+                  ? "border-green-400 bg-green-50"
+                  : "border-gray-300 hover:border-blue-400 hover:bg-blue-50"
               }
             `}
             onDragEnter={handleDragEnter}
@@ -138,7 +152,9 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
               <div className="space-y-4">
                 <CheckCircle className="w-16 h-16 text-green-500 mx-auto" />
                 <div>
-                  <p className="text-lg font-semibold text-gray-900">File Selected</p>
+                  <p className="text-lg font-semibold text-gray-900">
+                    File Selected
+                  </p>
                   <p className="text-gray-600">{selectedFile.name}</p>
                   <p className="text-sm text-gray-500">
                     {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
@@ -208,7 +224,7 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
               Advanced parsing of your resume content and structure
             </p>
           </div>
-          
+
           <div className="text-center">
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
               <CheckCircle className="w-6 h-6 text-green-600" />
@@ -218,12 +234,14 @@ const UploadPage: React.FC<UploadPageProps> = ({ onUploadSuccess }) => {
               Compare your resume against specific job descriptions
             </p>
           </div>
-          
+
           <div className="text-center">
             <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
               <Upload className="w-6 h-6 text-blue-600" />
             </div>
-            <h3 className="font-semibold text-gray-900 mb-2">Instant Feedback</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">
+              Instant Feedback
+            </h3>
             <p className="text-gray-600 text-sm">
               Get detailed suggestions and improvement recommendations
             </p>

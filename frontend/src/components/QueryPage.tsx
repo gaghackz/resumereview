@@ -31,13 +31,16 @@ const QueryPage: React.FC<QueryPageProps> = ({
     setResponse("");
 
     try {
-      const response = await fetch("http://localhost:3000/v1/query", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ query: query.trim() }),
-      });
+      const response = await fetch(
+        "https://resumereview-x9ve.onrender.com/v1/query",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ query: query.trim() }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Query failed: ${response.statusText}`);
