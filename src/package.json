@@ -1,5 +1,6 @@
 {
   "name": "src",
+  "type": "module",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -16,7 +17,8 @@
     "express": "^5.1.0",
     "install": "^0.13.0",
     "multer": "^2.0.1",
-    "npm": "^11.4.1",
-    "pdf-parse": "^1.1.1"
+    "npm": "^8.18.0",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^5.3.31"
   }
 }
