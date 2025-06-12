@@ -207,7 +207,7 @@ const QueryPage: React.FC<QueryPageProps> = ({
                     </button>
                   </div>
                   <div className="prose prose-gray max-w-none">
-                    <MarkdownRenderer content={response} />
+                    <MarkdownRenderer text={response} />
                   </div>
                 </div>
               ) : (
