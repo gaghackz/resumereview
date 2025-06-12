@@ -46,6 +46,7 @@ export async function chunkEmbedUpload(req, res) {
 async function extractTextFromPdf(filePath) {
   const dataBuffer = fs.readFileSync(filePath);
   const data = await pdf(dataBuffer);
+  fs.unlinkSync(filePath);
   return data.text;
 }
 
