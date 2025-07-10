@@ -85,7 +85,9 @@ async function embedText(chunk) {
 
 async function upsertToPineCone(embeddedChunks) {
   try {
-    const result = await index.namespace("meow").upsert(embeddedChunks);
+    const ns = index.namespace("meow");
+    await ns.deleteAll();
+    const result = await ns.upsert(embeddedChunks);
     console.log("✅ Upserted to Pinecone:", result);
   } catch (error) {
     console.error("❌ Pinecone upsert error:", error.message);
